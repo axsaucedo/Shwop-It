@@ -1,0 +1,22 @@
+{% extends "Shwopper/base.html" %}
+
+{% block content %}
+
+<p>
+    <img src="media/Reccomend.jpg">
+</p>
+
+{% for field, errors in shwopForm.errors.items %}
+    {% for error in errors %}
+        {{ error }}
+    {% endfor %}
+{% endfor %}
+
+<form action="." method="post">
+    {% csrf_token %}
+    {% for field in shwopForm %}
+        {{ field.label_tag }}: {{ field }}
+    {% endfor %}
+    <input type="submit" value="Generate!" />
+</form>
+{% endblock %}
