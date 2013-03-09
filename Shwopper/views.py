@@ -47,7 +47,7 @@ def processShwopLink(request, email, link):
         index = shwopLinkInstance.shwoplinkid
         shwopCode = cryptolink.encrypt(index)
 
-        return render(request, 'Shwopper/shortlinkSuccess.html',  {'shwopCode' : shwopCode})
+        return render(request, 'Shwopper/shortLinkSuccess.html',  {'shwopCode' : shwopCode})
 
 
 
