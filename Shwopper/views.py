@@ -32,17 +32,19 @@ def index(request):
 
 def processShwopLink(request, email, link):
     #registerUser(email)
-    shwopLink = shwopConverter.convertIntoAffiliate(link)
+    affiLink = shwopConverter.convertIntoAffiliate(link)
 
-    if shwopLink:
-        shwopLinkInstance = ShwopLink.objects.create(shwoplink=shwopLink, isaffiliate=True)
+    if affiLink:
+        shwopLinkInstance = ShwopLink.objects.create(   originallink=link,
+                                                        affiliatelink=affiLink )
         shwopLinkInstance.save()
         index = shwopLinkInstance.shwoplinkid
         shwopCode = cryptolink.encrypt(index)
 
         return render(request, 'Shwopper/shwopLinkSuccess.html',  {'shwopCode' : shwopCode})
     else:
-        shwopLinkInstance = ShwopLink.objects.create(shwoplink=link, isaffiliate=False)
+        shwopLinkInstance = ShwopLink.objects.create(   originallink=link,
+                                                        affiliatelink=affiLink )
         shwopLinkInstance.save()
         index = shwopLinkInstance.shwoplinkid
         shwopCode = cryptolink.encrypt(index)

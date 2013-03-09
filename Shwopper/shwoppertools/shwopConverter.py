@@ -12,6 +12,8 @@ def convertIntoAffiliate(url):
         www = 1
     domain = ''.join(url_elements[www:])
 
+    domain = domain.lower()
+
     if domain in globals():
         return globals()[domain](url)
 

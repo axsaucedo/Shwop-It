@@ -1,12 +1,7 @@
-{% extends "Shwopper/base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
-
-<p>
-    <img src="media/Reccomend.jpg">
-</p>
-
-{% for field, errors in shwopForm.errors.items %}
+{% for field, errors in shwopFiorm.errors.items %}
     {% for error in errors %}
         {{ error }}
     {% endfor %}
