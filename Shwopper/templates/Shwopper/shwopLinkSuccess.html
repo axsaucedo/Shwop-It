@@ -1,9 +1,20 @@
 {% block title %}
-    <h1>Your link has been successfully converted into affiliate!</h1>
+    {% if affiLink %}
+        <h1>Your link has been successfully converted into affiliate!</h1>
+    {% else %}
+        <h1>Your link has been shortened successfuly!</h1>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
+    <h2>Your link is: </h2>
     <a href="/{{ shwopCode }}">
         http://127.0.0.1:8000/{{ shwopCode }}
     </a>
+    {% if username %}
+        <h2>Your username is:</h2>
+        <p>{{ username }}</p>
+        <h2>and your password is:</h2>
+        <p>{{ password }}</p>
+    {% endif %}
 {% endblock %}

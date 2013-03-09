@@ -5,6 +5,10 @@ from urllib2 import urlopen                     #Used to check that given url is
 from Shwopper.shwoppertools.forms import ShwopLinkForm   #Custom form for email and link
 from Shwopper.shwoppertools import cryptolink, shwopConverter    #Contains tools to convert urls into shortened links
 
+#Used to create user
+from accounts.models import MyProfile
+from django.contrib.auth.models import User
+
 from models import ShwopLink
 
 def index(request):
@@ -31,25 +35,29 @@ def index(request):
         })
 
 def processShwopLink(request, email, link):
-    #registerUser(email)
+    user = None
+    password = ""
+    username = ""
+    if email:
+        password = User.objects.make_random_password()
+        username = email.split('@')[0]
+        user = MyProfile.objects.create(user=User.objects.create_user(   username,
+                                                                    email,
+                                                                    password))
+
     affiLink = shwopConverter.convertIntoAffiliate(link)
 
-    if affiLink:
-        shwopLinkInstance = ShwopLink.objects.create(   originallink=link,
-                                                        affiliatelink=affiLink )
-        shwopLinkInstance.save()
-        index = shwopLinkInstance.shwoplinkid
-        shwopCode = cryptolink.encrypt(index)
+    shwopLinkInstance = ShwopLink.objects.create(   originallink=link,
+                                                    affiliatelink=affiLink,
+                                                    userref=user)
+    shwopLinkInstance.save()
+    index = shwopLinkInstance.shwoplinkid
+    shwopCode = cryptolink.encrypt(index)
 
-        return render(request, 'Shwopper/shwopLinkSuccess.html',  {'shwopCode' : shwopCode})
-    else:
-        shwopLinkInstance = ShwopLink.objects.create(   originallink=link,
-                                                        affiliatelink=affiLink )
-        shwopLinkInstance.save()
-        index = shwopLinkInstance.shwoplinkid
-        shwopCode = cryptolink.encrypt(index)
-
-        return render(request, 'Shwopper/shortLinkSuccess.html',  {'shwopCode' : shwopCode})
+    return render(request, 'Shwopper/shwopLinkSuccess.html',  {'shwopCode' : shwopCode,
+                                                               'password' : password,
+                                                               'affiLink' : affiLink,
+                                                               'username' : username})
 
 
 

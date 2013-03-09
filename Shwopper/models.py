@@ -20,7 +20,7 @@ class CurrencyField(models.DecimalField):
 # This model holds all the affiliated links with the other attributes shown
 class ShwopLink(models.Model):
     shwoplinkid = models.AutoField(primary_key=True)
-    originallink = models.CharField("Shwop Link", max_length=1000)
+    originallink = models.CharField("Original Link", max_length=1000)
     affiliatelink = models.CharField("Affiliate Link", max_length=1000, blank=True) #If blank means no affiliate link exists
     datecreated = models.DateTimeField("Date created", default=datetime.datetime.utcnow().replace(tzinfo=utc))
     visitcount = models.IntegerField("Visit count", default=0)

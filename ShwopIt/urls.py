@@ -9,8 +9,12 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
     url(r'^shwoplink/$', views.processShwopLink, name='processShwopLink'),
-    url(r'^accounts/', include('userena.urls')),
     url(r'^admin/', include(admin.site.urls)),
+)
+
+#Any override for userena views goes here:
+urlpatterns += patterns('',
+    url(r'^accounts/', include('userena.urls')),
 )
 
 #For Static media

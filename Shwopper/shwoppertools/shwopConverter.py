@@ -8,7 +8,7 @@ def convertIntoAffiliate(url):
 
     #Removing the www if present
     www = 0
-    if url_elements[0] == "www":
+    if url_elements[0].lower() == "www":
         www = 1
     domain = ''.join(url_elements[www:])
 
