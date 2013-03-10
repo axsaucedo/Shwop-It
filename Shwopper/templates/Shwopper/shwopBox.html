@@ -9,11 +9,65 @@
 {% endblock %}
 
 {% block content %}
-<form id="shwopForm" action="." method="post">
+
+<form id="shwopform" action="." method="post">
     {% csrf_token %}
     {% for field in shwopForm %}
-        {{ field.label_tag }}: {{ field }}
+        {{ field }}
     {% endfor %}
-    <input type="submit" value="Generate!" />
+
+    <div style="width: 100%; height: 80px; ">
+        <div class="button-wrapper" >
+            <a href="#" onclick="document.forms[0].submit();return false;" value="Generate!" id="btn" class="a-btn">
+                <span class="a-btn-text">Shwop it!</span>
+                <span class="a-btn-slide-text">It's free!</span>
+                <span class="a-btn-icon-right"><span></span></span>
+            </a>
+        </div>
+    </div>
 </form>
+
+<div id="overview" >
+    <div id="firstline" style="display: inline;">
+        <div id="arrowimg">
+            <img src="/media/images/baseimg/s3.png">
+        </div>
+        <div id="linkimg">
+            <img src="/media/images/baseimg/s2.png">
+        </div>
+        <div id="basketimg">
+            <img src="/media/images/baseimg/s1.png">
+        </div>
+    </div>
+    <div id="secondline" >
+        <div class="imgtitle">
+            Swap
+        </div>
+        <div class="imgtitle">
+            Share
+        </div>
+        <div class="imgtitle">
+            Shop
+        </div>
+    </div>
+    <div id="thirdline">
+        <div class="imgtxt">
+            <p>
+                Convert your links into affiliate links!
+            </p>
+        </div>
+        <div class="imgtxt">
+            <p>
+                Share your link!
+            </p>
+        </div>
+        <div class="imgtxt">
+            <p>
+                Earn commission through each purchase!
+            </p>
+        </div>
+    </div>
+
+</div>
+
 {% endblock %}

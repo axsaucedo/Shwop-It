@@ -63,7 +63,7 @@ def processShwopLink(request, email, link):
                                                 not custom_userena_settings.USERENA_ACTIVATION_REQUIRED,
                                                 custom_userena_settings.USERENA_ACTIVATION_REQUIRED)
             subject = "Welcome!"
-            message = "Hello " + username + "! \n Your new password is '" + password + "'."
+            message = "Hello " + username + "! \n\n Your new username is: " + username + "\nYour new password is: '" + password + "'."
             send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email,])
             userCreated=True
 
