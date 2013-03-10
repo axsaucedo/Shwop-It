@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block alertMessage %}
+    {% if alertMessage %}
+        <div id="alertMessage">
+            {{ alertMessage }}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<form id="shwopForm" action="." method="post">
+    {% csrf_token %}
+    {% for field in shwopForm %}
+        {{ field.label_tag }}: {{ field }}
+    {% endfor %}
+    <input type="submit" value="Generate!" />
+</form>
+{% endblock %}

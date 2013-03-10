@@ -9,6 +9,15 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+
+#USERENA OVERRIDE SETTINGS
+USERENA_REDIRECT_ON_SIGNOUT = '/'
+USERENA_SIGNIN_REDIRECT_URL = '/'
+USERENA_SIGNIN_AFTER_SIGNUP = False
+USERENA_ACTIVATION_DAYS = 30
+USERENA_ACTIVATION_NOTIFY = True
+USERENA_ACTIVATION_REQUIRED = False
+
 ADMINS = (
     ('admin', 'axsauze@gmail.com'),
 )
@@ -56,8 +65,8 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # If run in the server it should be changed to:
-# MEDIA_ROOT = '/home/bitnami/apps/django/django_projects/AffiLinkProject/AffiLinkProject/media/'
-MEDIA_ROOT = '/Users/axsauze/IdeaProjects/AffiLinkProject/AffiLinkProject/media/'
+# MEDIA_ROOT = '/home/bitnami/apps/django/django_projects/ShwopItProject/ShwopIt/media/'
+MEDIA_ROOT = '/Users/axsauze/IdeaProjects/ShwopItProject/ShwopIt/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -70,8 +79,8 @@ ADMIN_MEDIA_PREFIX = '/adminmedia/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # If run in server it should be changed to:
-# STATIC_ROOT = '/home/bitnami/apps/django/django_projects/AffiLinkProject/AffiLinkProject/static/'
-STATIC_ROOT = '/Users/axsauze/IdeaProjects/AffiLinkProject/AffiLinkProject/static/'
+# STATIC_ROOT = '/home/bitnami/apps/django/django_projects/ShwopItProject/ShwopIt/static/'
+STATIC_ROOT = '/Users/axsauze/IdeaProjects/ShwopItProject/ShwopIt/static/'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -117,6 +126,7 @@ ROOT_URLCONF = 'ShwopIt.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'ShwopIt.wsgi.application'
 
+#TEMPLATE_DIRS = ('/home/bitnami/apps/django/django_projects/ShwopItProject/templates')
 TEMPLATE_DIRS = ('/Users/axsauze/IdeaProjects/ShwopItProject/templates',)
 
 INSTALLED_APPS = (

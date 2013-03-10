@@ -1,52 +1,73 @@
 from django.http import HttpResponsePermanentRedirect
 from django.shortcuts import render
 from django.forms.util import ErrorList         #Used to add cusom error in form
-from urllib2 import urlopen                     #Used to check that given url is valid
+import urllib2                                  #Used to check that given url is valid
 from Shwopper.shwoppertools.forms import ShwopLinkForm   #Custom form for email and link
 from Shwopper.shwoppertools import cryptolink, shwopConverter    #Contains tools to convert urls into shortened links
 
 #Used to create user
 from accounts.models import MyProfile
+from userena.models import UserenaSignup
 from django.contrib.auth.models import User
+
+from ShwopIt import settings as custom_userena_settings
+from django.conf import settings
+from django.core.mail import send_mail
 
 from models import ShwopLink
 
-def index(request):
+def shwopBox(request, alertMessage = ""):
     if request.method == 'POST':
         shwopForm = ShwopLinkForm(request.POST)
         if shwopForm.is_valid():
             email = shwopForm.cleaned_data['email']
             link = shwopForm.cleaned_data['link']
-#            try:
-            code = urlopen(link).code
-            if ( code / 100 < 4):
-                return processShwopLink(request, email, link)
-#            except Exception: #Catch exception if link does not exist
-#                pass
+            try:
+                #urlrequest has to be used as some websites don't allow python to request data, sending a 404
+                urlrequest = urllib2.Request(link, headers={'User-Agent' : "Shwop.It"} )
+                code = urllib2.urlopen(urlrequest).code
+                if ( code / 100 < 4):
+                    return processShwopLink(request, email, link)
+            except urllib2.HTTPError: #Catch exception if link does not exist
+                pass
+            except urllib2.URLError: #Catch exception if link does not exist
+                pass
 
-            errors = shwopForm._errors.setdefault("link", ErrorList())
-            errors.append(u"Link provided does not exist")
+            alertMessage = "Link provided is not valid"
 
     else:
         shwopForm = ShwopLinkForm()
 
-    return render(request, 'Shwopper/index.html', {
+    return render(request, 'Shwopper/shwopBox.html', {
         'shwopForm': shwopForm,
+        'alertMessage' : alertMessage
         })
 
 def processShwopLink(request, email, link):
     user = None
     password = ""
     username = ""
-    if email:
-        password = User.objects.make_random_password()
+    userCreated = False
+
+    if request.user.is_authenticated():
+        user = request.user.my_profile
+    elif email:
         username = email.split('@')[0]
-        user = MyProfile.objects.create(user=User.objects.create_user(   username,
-                                                                    email,
-                                                                    password))
+        try:
+            user = User.objects.get(username=username).my_profile
+        except User.DoesNotExist:
+            password = User.objects.make_random_password()
+            UserenaSignup.objects.create_user(username,
+                                                email,
+                                                password,
+                                                not custom_userena_settings.USERENA_ACTIVATION_REQUIRED,
+                                                custom_userena_settings.USERENA_ACTIVATION_REQUIRED)
+            subject = "Welcome!"
+            message = "Hello " + username + "! \n Your new password is '" + password + "'."
+            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email,])
+            userCreated=True
 
     affiLink = shwopConverter.convertIntoAffiliate(link)
-
     shwopLinkInstance = ShwopLink.objects.create(   originallink=link,
                                                     affiliatelink=affiLink,
                                                     userref=user)
@@ -55,9 +76,9 @@ def processShwopLink(request, email, link):
     shwopCode = cryptolink.encrypt(index)
 
     return render(request, 'Shwopper/shwopLinkSuccess.html',  {'shwopCode' : shwopCode,
-                                                               'password' : password,
                                                                'affiLink' : affiLink,
-                                                               'username' : username})
+                                                               'currUser' : user,
+                                                                'userCreated': userCreated})
 
 
 

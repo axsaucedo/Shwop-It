@@ -7,14 +7,9 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', views.index, name='index'),
+    url(r'^$', views.shwopBox, name='shwopBox'),
     url(r'^shwoplink/$', views.processShwopLink, name='processShwopLink'),
     url(r'^admin/', include(admin.site.urls)),
-)
-
-#Any override for userena views goes here:
-urlpatterns += patterns('',
-    url(r'^accounts/', include('userena.urls')),
 )
 
 #For Static media
@@ -22,6 +17,11 @@ if settings.DEBUG:
     urlpatterns += patterns('',
         (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     )
+
+#Any override for userena views goes here:
+urlpatterns += patterns('',
+    url(r'^accounts/', include('accounts.urls')),
+)
 
 #Process redirect request
 urlpatterns += patterns('',

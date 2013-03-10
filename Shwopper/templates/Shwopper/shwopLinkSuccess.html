@@ -1,20 +1,27 @@
-{% block title %}
+{% extends base.html %}
+
+{% block content %}
     {% if affiLink %}
         <h1>Your link has been successfully converted into affiliate!</h1>
     {% else %}
         <h1>Your link has been shortened successfuly!</h1>
     {% endif %}
-{% endblock %}
 
-{% block content %}
     <h2>Your link is: </h2>
     <a href="/{{ shwopCode }}">
         http://127.0.0.1:8000/{{ shwopCode }}
     </a>
-    {% if username %}
-        <h2>Your username is:</h2>
-        <p>{{ username }}</p>
-        <h2>and your password is:</h2>
-        <p>{{ password }}</p>
+    {% if currUser %}
+        {% if user.is_authenticated %}
+            <h2>Remember to visit your user panel to review the analytics of your link!</h2>
+        {% else %}
+            <h2>Seems like you previously registered this email address!</h2>
+            <a>Would you like us to send your password to your email once again?</a>
+        {% endif %}
+    {% else %}
+        {% if userCreated %}
+            <h2>Congratulations! We have sent you an email address with your password!</h2>
+            <a href="/accounts/signin">Click here to get started earning!</a>
+        {% endif %}
     {% endif %}
 {% endblock %}
